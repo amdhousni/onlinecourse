@@ -1,0 +1,7 @@
+__pycache__/
+*.py[cod]
+.venv/
+db.sqlite3
+media/course_images/*.jpg
+!media/course_images/django_web_development.jpg
+.DS_Store

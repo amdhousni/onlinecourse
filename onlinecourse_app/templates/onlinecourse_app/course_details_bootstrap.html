@@ -1,0 +1,40 @@
+{% extends 'onlinecourse_app/base.html' %}
+
+{% block title %}{{ course.name }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8">
+        <h1 class="mb-3">{{ course.name }}</h1>
+        <p class="lead">{{ course.description }}</p>
+
+        <h2 class="h4 mt-4">Lessons</h2>
+        <div class="list-group shadow-sm">
+            {% for lesson in course.lesson_set.all %}
+            <div class="list-group-item">
+                <div class="d-flex w-100 justify-content-between">
+                    <h3 class="h6 mb-1">Lesson {{ lesson.order }}: {{ lesson.title }}</h3>
+                </div>
+                <p class="mb-0 text-muted">{{ lesson.content }}</p>
+            </div>
+            {% empty %}
+            <div class="list-group-item">No lessons are available for this course yet.</div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        {% if course.image %}
+        <img src="{{ course.image.url }}" class="img-fluid rounded shadow-sm mb-4" alt="{{ course.name }}">
+        {% endif %}
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h2 class="h6 text-uppercase text-muted">Assessment</h2>
+                <p class="mb-2">{{ course.question_set.count }} questions</p>
+                <p class="mb-3">Passing grade: 70%</p>
+                <a class="btn btn-success w-100" href="{% url 'onlinecourse_app:exam' course.id %}">Start the exam</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

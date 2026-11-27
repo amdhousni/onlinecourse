@@ -1,0 +1,70 @@
+{% extends 'onlinecourse_app/base.html' %}
+
+{% block title %}Exam result{% endblock %}
+
+{% block content %}
+{% if passed %}
+<div class="alert alert-success" role="alert">
+    <h1 class="alert-heading h3">Congratulations!</h1>
+    <p class="mb-0">You passed the exam for <strong>{{ course.name }}</strong>.</p>
+</div>
+{% else %}
+<div class="alert alert-danger" role="alert">
+    <h1 class="alert-heading h3">Exam not passed</h1>
+    <p class="mb-0">You need at least {{ passing_percentage }}% to pass this exam.</p>
+</div>
+{% endif %}
+
+<div class="card mb-4 shadow-sm">
+    <div class="card-body d-flex flex-wrap gap-4">
+        <div>
+            <div class="text-muted small text-uppercase">Score</div>
+            <div class="h3 mb-0">{{ total_score }} / {{ max_score }}</div>
+        </div>
+        <div>
+            <div class="text-muted small text-uppercase">Percentage</div>
+            <div class="h3 mb-0">{{ score_percentage }}%</div>
+        </div>
+        <div>
+            <div class="text-muted small text-uppercase">Passing grade</div>
+            <div class="h3 mb-0">{{ passing_percentage }}%</div>
+        </div>
+    </div>
+</div>
+
+<h2 class="h4 mb-3">Exam results</h2>
+<table class="table table-bordered bg-white align-middle">
+    <thead class="table-light">
+        <tr>
+            <th scope="col">Question</th>
+            <th scope="col">Your answer</th>
+            <th scope="col">Correct answer</th>
+            <th scope="col">Result</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for result in results %}
+        <tr>
+            <td>{{ result.question.content }}</td>
+            <td>
+                {% if result.selected %}
+                    {{ result.selected.content }}
+                {% else %}
+                    <span class="text-muted">No answer</span>
+                {% endif %}
+            </td>
+            <td>{{ result.correct_choice.content }}</td>
+            <td>
+                {% if result.is_correct %}
+                <span class="badge bg-success">Correct</span>
+                {% else %}
+                <span class="badge bg-danger">Incorrect</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a class="btn btn-outline-primary" href="{% url 'onlinecourse_app:course_details' course.id %}">Back to the course</a>
+{% endblock %}

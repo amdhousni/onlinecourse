@@ -1,0 +1,26 @@
+{% extends 'onlinecourse_app/base.html' %}
+
+{% block title %}Courses{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Available courses</h1>
+<div class="row g-4">
+    {% for course in courses %}
+    <div class="col-md-6">
+        <div class="card h-100 shadow-sm">
+            {% if course.image %}
+            <img src="{{ course.image.url }}" class="card-img-top" alt="{{ course.name }}">
+            {% endif %}
+            <div class="card-body">
+                <h2 class="h5 card-title">{{ course.name }}</h2>
+                <p class="card-text text-muted">{{ course.description }}</p>
+                <p class="small mb-3">{{ course.lesson_set.count }} lessons</p>
+                <a class="btn btn-primary" href="{% url 'onlinecourse_app:course_details' course.id %}">View course</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p>No courses available yet.</p>
+    {% endfor %}
+</div>
+{% endblock %}
